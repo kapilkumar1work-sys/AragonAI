@@ -84,8 +84,11 @@ export class ValidationService {
       };
     }
 
-    const isBlurry = await blurDetectionService.isBlurry(processed.buffer);
-    if (isBlurry) {
+    const blurResult = await blurDetectionService.checkBlur(processed.buffer);
+    if (blurResult.isBlurry) {
+      console.log(
+        `Rejected blurry image (score: ${blurResult.score}, threshold: ${blurResult.threshold})`,
+      );
       return { accepted: false, rejectionReason: REJECTION_REASONS.BLURRY_IMAGE };
     }
 

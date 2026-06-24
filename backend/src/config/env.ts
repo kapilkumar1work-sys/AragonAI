@@ -18,7 +18,7 @@ export const env = {
   },
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   maxFileSizeMb: parseInt(process.env.MAX_FILE_SIZE_MB || '25', 10),
-  blurThreshold: parseFloat(process.env.BLUR_THRESHOLD || '100'),
+  blurThreshold: parseFloat(process.env.BLUR_THRESHOLD || '250'),
   faceMinAreaPercent: parseFloat(process.env.FACE_MIN_AREA_PERCENT || '15'),
   duplicateSimilarityThreshold: parseFloat(
     process.env.DUPLICATE_SIMILARITY_THRESHOLD || '95',

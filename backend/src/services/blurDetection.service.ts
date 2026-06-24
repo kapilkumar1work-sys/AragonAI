@@ -1,9 +1,22 @@
 import sharp from 'sharp';
 import { env } from '../config/env';
 
+const BLUR_ANALYSIS_WIDTH = 800;
+
+export interface BlurCheckResult {
+  isBlurry: boolean;
+  score: number;
+  threshold: number;
+}
+
 export class BlurDetectionService {
+  /**
+   * Variance of Laplacian on a normalized-size grayscale image.
+   * Sharp images → high score. Blurry images → low score.
+   */
   async calculateLaplacianVariance(imageBuffer: Buffer): Promise<number> {
     const { data, info } = await sharp(imageBuffer)
+      .resize(BLUR_ANALYSIS_WIDTH, null, { withoutEnlargement: true, fit: 'inside' })
       .greyscale()
       .raw()
       .toBuffer({ resolveWithObject: true });
@@ -34,9 +47,20 @@ export class BlurDetectionService {
     return sumSq / count - mean * mean;
   }
 
+  async checkBlur(imageBuffer: Buffer): Promise<BlurCheckResult> {
+    const score = await this.calculateLaplacianVariance(imageBuffer);
+    const threshold = env.blurThreshold;
+
+    return {
+      isBlurry: score < threshold,
+      score: Math.round(score * 100) / 100,
+      threshold,
+    };
+  }
+
   async isBlurry(imageBuffer: Buffer): Promise<boolean> {
-    const variance = await this.calculateLaplacianVariance(imageBuffer);
-    return variance < env.blurThreshold;
+    const result = await this.checkBlur(imageBuffer);
+    return result.isBlurry;
   }
 }
 
