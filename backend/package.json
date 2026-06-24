@@ -1,0 +1,52 @@
+{
+  "name": "aragon-ai-backend",
+  "version": "1.0.0",
+  "description": "AI photo upload and validation platform",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "worker": "ts-node-dev --respawn --transpile-only src/workers/imageValidation.worker.ts",
+    "build": "tsc",
+    "postinstall": "node scripts/download-models.js || true",
+    "setup:models": "node scripts/download-models.js",
+    "test:db": "node scripts/test-db.js",
+    "start": "node dist/index.js",
+    "start:worker": "node dist/workers/imageValidation.worker.js",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0",
+    "@aws-sdk/s3-request-presigner": "^3.750.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "bullmq": "^5.41.0",
+    "canvas": "^3.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "face-api.js": "^0.22.2",
+    "file-type": "^16.5.4",
+    "heic-convert": "^2.1.0",
+    "helmet": "^8.0.0",
+    "image-hash": "^5.3.2",
+    "ioredis": "^5.5.0",
+    "mongoose": "^8.10.1",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.13.4",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "eslint": "^9.20.1",
+    "prettier": "^3.5.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  }
+}
